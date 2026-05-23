@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Jaipur Community Events Hub
 
 Next.js + Firebase app for tech meetups, cultural events, and curated Instagram highlights in Jaipur.
@@ -66,3 +67,7 @@ Add Firebase env vars in the Vercel dashboard and authorize your `*.vercel.app` 
 3. Replace demo Reel URLs with your Instagram links
 4. Add `/admin` for event CRUD (protected by `admin` custom claim)
 5. Deploy to Vercel ([deploy guide](docs/DEPLOY_VERCEL.md))
+=======
+# community-event-hub
+The Heritage
+>>>>>>> ff323995e6e3a08cfa212389fa4d8c34164e1f7f
