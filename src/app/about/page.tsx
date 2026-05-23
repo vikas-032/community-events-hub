@@ -19,7 +19,7 @@ export default function AboutPage() {
         <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
           <div className="space-y-5 text-stone-400 leading-relaxed">
             <p>
-              <span className="font-display text-xl text-amber-200">Jaipur Events Hub</span>{" "}
+              <span className="font-display text-xl text-amber-200">Jaipur The City of Royality</span>{" "}
               blends the Pink City&apos;s cultural rhythm with its growing tech community — meetups in
               Malviya Nagar, heritage walks in the Old City, and founder chai in C-Scheme.
             </p>
