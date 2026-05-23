@@ -1,26 +1,141 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0a0a;
+  --foreground: #f5f5f4;
+  --surface: #141414;
+  --surface-elevated: #1a1a1a;
+  --border: rgba(255, 255, 255, 0.08);
+  --gold: #d4a574;
+  --gold-bright: #f0c987;
+  --terracotta: #c45c26;
+  --muted: #a8a29e;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-gold: var(--gold);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-playfair);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  color-scheme: dark;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/* Heritage UI primitives */
+.font-display {
+  font-family: var(--font-playfair), Georgia, "Times New Roman", serif;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #0a0a0a;
+  background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold) 50%, var(--terracotta) 100%);
+  transition: filter 0.2s, transform 0.2s;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--foreground);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(212, 165, 116, 0.4);
+}
+
+.card-surface {
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.tag-pill {
+  border-radius: 9999px;
+  padding: 0.125rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  color: var(--gold-bright);
+  background: rgba(212, 165, 116, 0.12);
+  border: 1px solid rgba(212, 165, 116, 0.2);
+}
+
+.text-accent {
+  color: var(--gold);
+}
+
+.text-accent:hover {
+  color: var(--gold-bright);
+}
+
+/* Slow Ken Burns — hero & gallery */
+@keyframes ken-burns {
+  0% {
+    transform: scale(1.06) translate(0%, 0%);
+  }
+  50% {
+    transform: scale(1.14) translate(-1.2%, -0.8%);
+  }
+  100% {
+    transform: scale(1.1) translate(0.8%, -1.2%);
+  }
+}
+
+@keyframes ken-burns-slow {
+  0% {
+    transform: scale(1.04) translate(0%, 0%);
+  }
+  100% {
+    transform: scale(1.1) translate(-1%, -0.6%);
+  }
+}
+
+.ken-burns-layer {
+  animation: ken-burns 32s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.ken-burns-layer-slow {
+  animation: ken-burns-slow 42s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ken-burns-layer,
+  .ken-burns-layer-slow {
+    animation: none;
+    transform: scale(1.06);
+  }
 }
