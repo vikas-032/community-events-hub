@@ -24,9 +24,9 @@ export default function AboutPage() {
               Malviya Nagar, heritage walks in the Old City, and founder chai in C-Scheme.
             </p>
             <p>
-              Built with <strong className="text-stone-200">Next.js</strong> and{" "}
-              <strong className="text-stone-200">Firebase</strong>: Firestore for events & RSVPs,
-              Google sign-in, and curated Instagram Reel links for highlights.
+              The Royal<strong className="text-stone-200">Feel Of Jaipur</strong> and{" "}
+              <strong className="text-stone-200">Food</strong>: full fill your royal dreams of the heritage city,
+              with the best of Jaipur&apos;s culture, food, and tech events all in one place.
             </p>
             <p>
               This is your personal brand platform: feature the events you care about, grow an
