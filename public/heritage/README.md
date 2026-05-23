@@ -25,3 +25,7 @@ NEXT_PUBLIC_USE_LOCAL_HERITAGE=true
 - Landscape orientation works best; faces of monuments centered.
 - Compress large files (~200–400 KB) with [Squoosh](https://squoosh.app) for faster loads.
 - Without this flag, the app uses curated Unsplash fallbacks automatically.
+
+## Food section images
+
+Food photos are configured in `src/lib/jaipur-food-images.ts`. To use your own dish photos, replace the Unsplash URLs there or add files under `public/food/` and point `src` to `/food/your-image.jpg`.

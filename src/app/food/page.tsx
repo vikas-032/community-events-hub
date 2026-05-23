@@ -1,7 +1,7 @@
 import { JaipurFoodSection } from "@/components/food/JaipurFoodSection";
-import { PageBanner } from "@/components/layout/PageBanner";
+import { InstagramEmbed } from "@/components/food/InstagramEmbed";
 import { FOOD_LOCAL_ATTRIBUTION } from "@/lib/jaipur-food";
-import { HERITAGE_GALLERY } from "@/lib/heritage-images";
+import { getFeaturedInstagramFoodPosts } from "@/lib/jaipur-food-instagram";
 
 export const metadata = {
   title: "Jaipur Food Guide",
@@ -9,13 +9,26 @@ export const metadata = {
 };
 
 export default function FoodPage() {
+  const heroPost = getFeaturedInstagramFoodPosts()[0];
+
   return (
     <div>
-      <PageBanner
-        title="Jaipur food guide"
-        subtitle="Best places and areas — every recommendation sourced from local knowledge."
-        image={HERITAGE_GALLERY[0]}
-      />
+      <div className="border-b border-white/5 bg-[#0a0a0a] pt-16">
+        <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+          <p className="text-sm uppercase tracking-[0.25em] text-amber-500/80">Food guide</p>
+          <h1 className="font-display mt-2 text-3xl font-semibold text-white sm:text-4xl">
+            Jaipur food from local Instagram
+          </h1>
+          <p className="mt-3 max-w-2xl text-stone-400">
+            Best places and areas — recommendations from locals, visuals from Jaipur food creators.
+          </p>
+          {heroPost && (
+            <div className="mt-8 max-w-md">
+              <InstagramEmbed post={heroPost} size="hero" />
+            </div>
+          )}
+        </div>
+      </div>
       <JaipurFoodSection showViewAllLink={false} />
     </div>
   );

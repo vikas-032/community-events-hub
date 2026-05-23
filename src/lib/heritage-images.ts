@@ -1,4 +1,4 @@
-/** Jaipur heritage imagery — Unsplash by default, or your files in /public/heritage */
+/** Curated imagery — Unsplash (verified IDs) or /public/heritage when local mode is on */
 export type HeritageImage = {
   src: string;
   alt: string;
@@ -7,10 +7,9 @@ export type HeritageImage = {
 
 const useLocalPhotos = process.env.NEXT_PUBLIC_USE_LOCAL_HERITAGE === "true";
 
-const unsplashQ = "w=1920&q=85&auto=format&fit=crop";
-const unsplashThumb = "w=800&q=80&auto=format&fit=crop";
+const q = "w=1920&q=85&auto=format&fit=crop";
+const thumb = "w=800&q=80&auto=format&fit=crop";
 
-/** Pick local asset when enabled, otherwise remote fallback */
 function heritageImage(localPath: string, unsplashUrl: string): string {
   return useLocalPhotos ? localPath : unsplashUrl;
 }
@@ -18,7 +17,7 @@ function heritageImage(localPath: string, unsplashUrl: string): string {
 export const HERITAGE_HERO: HeritageImage = {
   src: heritageImage(
     "/heritage/hero.jpg",
-    `https://images.unsplash.com/photo-1599661046280-e842a1773441?${unsplashQ}`,
+    `https://images.unsplash.com/photo-1599661046280-e842a1773441?${q}`,
   ),
   alt: "Hawa Mahal facade at golden hour, Jaipur",
   caption: "The Palace of Winds",
@@ -28,7 +27,7 @@ export const HERITAGE_GALLERY: HeritageImage[] = [
   {
     src: heritageImage(
       "/heritage/hawa-mahal.jpg",
-      `https://images.unsplash.com/photo-1599661046280-e842a1773441?${unsplashThumb}`,
+      `https://images.unsplash.com/photo-1599661046280-e842a1773441?${thumb}`,
     ),
     alt: "Hawa Mahal, Jaipur",
     caption: "Hawa Mahal",
@@ -36,7 +35,7 @@ export const HERITAGE_GALLERY: HeritageImage[] = [
   {
     src: heritageImage(
       "/heritage/amer-fort.jpg",
-      `https://images.unsplash.com/photo-1477587458883-47145ed94245?${unsplashThumb}`,
+      `https://images.unsplash.com/photo-1477587458883-47145ed94245?${thumb}`,
     ),
     alt: "Amer Fort overlooking Maota Lake",
     caption: "Amer Fort",
@@ -44,7 +43,7 @@ export const HERITAGE_GALLERY: HeritageImage[] = [
   {
     src: heritageImage(
       "/heritage/pink-city.jpg",
-      `https://images.unsplash.com/photo-1583422409516-5245be061f65?${unsplashThumb}`,
+      `https://images.unsplash.com/photo-1583422409516-5245be061f65?${thumb}`,
     ),
     alt: "Pink City streetscape, Jaipur",
     caption: "Pink City",
@@ -52,7 +51,7 @@ export const HERITAGE_GALLERY: HeritageImage[] = [
   {
     src: heritageImage(
       "/heritage/palace.jpg",
-      `https://images.unsplash.com/photo-1609137144819-7a983e2c823b?${unsplashThumb}`,
+      `https://images.unsplash.com/photo-1609137144819-7a983e2c823b?${thumb}`,
     ),
     alt: "Ornate palace architecture, Rajasthan",
     caption: "Royal Jaipur",
@@ -60,7 +59,7 @@ export const HERITAGE_GALLERY: HeritageImage[] = [
   {
     src: heritageImage(
       "/heritage/city-lights.jpg",
-      `https://images.unsplash.com/photo-1566552886739-258549411dad?${unsplashThumb}`,
+      `https://images.unsplash.com/photo-1566552886739-258549411dad?${thumb}`,
     ),
     alt: "Jaipur city panorama at dusk",
     caption: "City lights",
@@ -68,7 +67,7 @@ export const HERITAGE_GALLERY: HeritageImage[] = [
   {
     src: heritageImage(
       "/heritage/fort-trails.jpg",
-      `https://images.unsplash.com/photo-1524492412937-b28c1653018d?${unsplashThumb}`,
+      `https://images.unsplash.com/photo-1524492412937-b28c1653018d?${thumb}`,
     ),
     alt: "Historic fort walls in Rajasthan",
     caption: "Fort trails",

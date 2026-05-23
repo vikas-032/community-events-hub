@@ -2,12 +2,18 @@
 
 import { useMemo, useState } from "react";
 
+import { InstagramEmbed } from "@/components/food/InstagramEmbed";
+import { InstagramFoodShowcase } from "@/components/food/InstagramFoodShowcase";
 import {
   FOOD_LOCAL_ATTRIBUTION,
   JAIPUR_FOOD_AREAS,
   JAIPUR_FOOD_PLACES,
   getFoodPlacesByArea,
 } from "@/lib/jaipur-food";
+import {
+  getInstagramPostForPlace,
+  getInstagramPostsForArea,
+} from "@/lib/jaipur-food-instagram";
 import type { JaipurFoodArea } from "@/types/food";
 
 const PRICE_LABELS = {
@@ -48,32 +54,47 @@ export function JaipurFoodSection({ showViewAllLink = true }: { showViewAllLink?
           </span>
           <div className="text-sm leading-relaxed text-amber-100/90">
             <strong className="font-medium text-amber-300">Curated by locals.</strong> Areas, dishes,
-            and timing tips are shared by Jaipur residents — not restaurant ads. If a place changes,
-            locals update word-of-mouth first; treat this as a living neighbourhood guide.
+            and timing tips are shared by Jaipur residents. Food photos load from{" "}
+            <strong className="text-amber-300">Instagram influencers</strong> — follow them for
+            updates.
           </div>
         </div>
 
-        <div className="mt-12">
+        <InstagramFoodShowcase />
+
+        <div className="mt-16">
           <h3 className="text-sm font-semibold uppercase tracking-wider text-stone-500">
             Explore by area
           </h3>
-          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {JAIPUR_FOOD_AREAS.map((area) => (
-              <button
-                key={area.id}
-                type="button"
-                onClick={() => setFilter(area.id)}
-                className={`rounded-xl border p-4 text-left transition ${
-                  filter === area.id
-                    ? "border-amber-500/40 bg-amber-500/10"
-                    : "border-white/10 bg-white/[0.02] hover:border-amber-500/20"
-                }`}
-              >
-                <p className="font-medium text-white">{area.name}</p>
-                <p className="mt-1 text-xs text-amber-500/80">{area.vibe}</p>
-                <p className="mt-2 line-clamp-2 text-xs text-stone-500">{area.summary}</p>
-              </button>
-            ))}
+          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {JAIPUR_FOOD_AREAS.map((area) => {
+              const areaPosts = getInstagramPostsForArea(area.id);
+              const previewPost = areaPosts[0];
+
+              return (
+                <button
+                  key={area.id}
+                  type="button"
+                  onClick={() => setFilter(area.id)}
+                  className={`overflow-hidden rounded-xl border text-left transition ${
+                    filter === area.id
+                      ? "border-amber-500/40 ring-1 ring-amber-500/30"
+                      : "border-white/10 hover:border-amber-500/20"
+                  }`}
+                >
+                  {previewPost ? (
+                    <InstagramEmbed post={previewPost} size="compact" className="rounded-none border-0" />
+                  ) : (
+                    <div className="h-28 bg-stone-900" />
+                  )}
+                  <div className="border-t border-white/10 p-4">
+                    <p className="font-medium text-white">{area.name}</p>
+                    <p className="mt-1 text-xs text-amber-500/80">{area.vibe}</p>
+                    <p className="mt-2 line-clamp-2 text-xs text-stone-500">{area.summary}</p>
+                  </div>
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -105,49 +126,63 @@ export function JaipurFoodSection({ showViewAllLink = true }: { showViewAllLink?
           ))}
         </div>
 
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
-          {places.map((place) => (
-            <article key={place.id} className="card-surface flex flex-col p-6">
-              <div className="flex flex-wrap items-start justify-between gap-2">
-                <div>
-                  <p className="text-xs font-medium uppercase tracking-wider text-amber-500/90">
-                    {place.areaLabel}
-                  </p>
-                  <h3 className="mt-1 font-display text-xl text-white">{place.name}</h3>
-                </div>
-                {place.priceRange && (
-                  <span className="tag-pill shrink-0">{PRICE_LABELS[place.priceRange]}</span>
+        <div className="mt-10 grid gap-8 lg:grid-cols-2">
+          {places.map((place) => {
+            const igPost = getInstagramPostForPlace(place.id);
+
+            return (
+              <article key={place.id} className="card-surface flex flex-col overflow-hidden">
+                {igPost ? (
+                  <InstagramEmbed post={igPost} size="default" className="rounded-none border-0 border-b border-white/10" />
+                ) : (
+                  <div className="flex h-48 items-center justify-center bg-stone-900 text-sm text-stone-500">
+                    Add an Instagram post in jaipur-food-instagram.ts
+                  </div>
                 )}
-              </div>
 
-              <ul className="mt-4 flex flex-wrap gap-2">
-                {place.mustTry.map((dish) => (
-                  <li
-                    key={dish}
-                    className="rounded-md bg-white/5 px-2.5 py-1 text-xs text-stone-300"
-                  >
-                    {dish}
-                  </li>
-                ))}
-              </ul>
+                <div className="flex flex-1 flex-col p-6">
+                  <div className="flex flex-wrap items-start justify-between gap-2">
+                    <div>
+                      <p className="text-xs font-medium uppercase tracking-wider text-amber-500/90">
+                        {place.areaLabel}
+                      </p>
+                      <h3 className="mt-1 font-display text-xl text-white">{place.name}</h3>
+                    </div>
+                    {place.priceRange && (
+                      <span className="tag-pill shrink-0">{PRICE_LABELS[place.priceRange]}</span>
+                    )}
+                  </div>
 
-              <p className="mt-4 flex-1 text-sm leading-relaxed text-stone-400">
-                {place.description}
-              </p>
+                  <ul className="mt-4 flex flex-wrap gap-2">
+                    {place.mustTry.map((dish) => (
+                      <li
+                        key={dish}
+                        className="rounded-md bg-white/5 px-2.5 py-1 text-xs text-stone-300"
+                      >
+                        {dish}
+                      </li>
+                    ))}
+                  </ul>
 
-              {place.localTip && (
-                <p className="mt-4 rounded-lg border border-white/5 bg-black/40 px-3 py-2 text-sm text-stone-400">
-                  <span className="font-medium text-amber-400/90">Local tip: </span>
-                  {place.localTip}
-                </p>
-              )}
+                  <p className="mt-4 flex-1 text-sm leading-relaxed text-stone-400">
+                    {place.description}
+                  </p>
 
-              <div className="mt-4 flex flex-wrap gap-3 border-t border-white/5 pt-4 text-xs text-stone-500">
-                {place.bestTime && <span>Best time: {place.bestTime}</span>}
-                <span className="text-amber-600/60">· Shared by Jaipur locals</span>
-              </div>
-            </article>
-          ))}
+                  {place.localTip && (
+                    <p className="mt-4 rounded-lg border border-white/5 bg-black/40 px-3 py-2 text-sm text-stone-400">
+                      <span className="font-medium text-amber-400/90">Local tip: </span>
+                      {place.localTip}
+                    </p>
+                  )}
+
+                  <div className="mt-4 flex flex-wrap gap-3 border-t border-white/5 pt-4 text-xs text-stone-500">
+                    {place.bestTime && <span>Best time: {place.bestTime}</span>}
+                    <span className="text-amber-600/60">· Shared by Jaipur locals</span>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
         </div>
 
         {places.length === 0 && (
