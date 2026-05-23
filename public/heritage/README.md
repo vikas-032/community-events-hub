@@ -28,4 +28,4 @@ NEXT_PUBLIC_USE_LOCAL_HERITAGE=true
 
 ## Food section images
 
-Food photos are configured in `src/lib/jaipur-food-images.ts`. To use your own dish photos, replace the Unsplash URLs there or add files under `public/food/` and point `src` to `/food/your-image.jpg`.
+Food visuals use Instagram embeds — see `src/lib/jaipur-food-instagram.ts` and `docs/FOOD_INSTAGRAM.md`.

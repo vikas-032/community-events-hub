@@ -72,27 +72,33 @@ export function JaipurFoodSection({ showViewAllLink = true }: { showViewAllLink?
               const previewPost = areaPosts[0];
 
               return (
-                <button
+                <div
                   key={area.id}
-                  type="button"
-                  onClick={() => setFilter(area.id)}
-                  className={`overflow-hidden rounded-xl border text-left transition ${
+                  className={`overflow-hidden rounded-xl border transition ${
                     filter === area.id
                       ? "border-amber-500/40 ring-1 ring-amber-500/30"
                       : "border-white/10 hover:border-amber-500/20"
                   }`}
                 >
                   {previewPost ? (
-                    <InstagramEmbed post={previewPost} size="compact" className="rounded-none border-0" />
+                    <InstagramEmbed
+                      post={previewPost}
+                      size="compact"
+                      className="rounded-none border-0"
+                    />
                   ) : (
                     <div className="h-28 bg-stone-900" />
                   )}
-                  <div className="border-t border-white/10 p-4">
+                  <button
+                    type="button"
+                    onClick={() => setFilter(area.id)}
+                    className="w-full border-t border-white/10 p-4 text-left"
+                  >
                     <p className="font-medium text-white">{area.name}</p>
                     <p className="mt-1 text-xs text-amber-500/80">{area.vibe}</p>
                     <p className="mt-2 line-clamp-2 text-xs text-stone-500">{area.summary}</p>
-                  </div>
-                </button>
+                  </button>
+                </div>
               );
             })}
           </div>
