@@ -24,7 +24,7 @@ NEXT_PUBLIC_USE_LOCAL_HERITAGE=true
 
 - Landscape orientation works best; faces of monuments centered.
 - Compress large files (~200–400 KB) with [Squoosh](https://squoosh.app) for faster loads.
-- Without this flag, the app uses curated Unsplash fallbacks automatically.
+- Without this flag, the app uses curated **Pexels** photos automatically (`src/lib/pexels-images.ts`).
 
 ## Food section images
 

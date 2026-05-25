@@ -22,6 +22,9 @@ export function Footer() {
           <Link href="/events" className="text-accent transition">
             Events
           </Link>
+          <Link href="/blog" className="text-accent transition">
+            Blog
+          </Link>
           <Link href="/food" className="text-accent transition">
             Food
           </Link>

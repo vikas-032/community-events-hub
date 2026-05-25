@@ -1,9 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 import { InstagramEmbed } from "@/components/food/InstagramEmbed";
 import { InstagramFoodShowcase } from "@/components/food/InstagramFoodShowcase";
+import { InstagramPostLink } from "@/components/food/InstagramPostLink";
 import {
   FOOD_LOCAL_ATTRIBUTION,
   JAIPUR_FOOD_AREAS,
@@ -12,7 +13,7 @@ import {
 } from "@/lib/jaipur-food";
 import {
   getInstagramPostForPlace,
-  getInstagramPostsForArea,
+  getInstagramReelForArea,
 } from "@/lib/jaipur-food-instagram";
 import type { JaipurFoodArea } from "@/types/food";
 
@@ -26,8 +27,23 @@ type FilterValue = JaipurFoodArea | "all";
 
 export function JaipurFoodSection({ showViewAllLink = true }: { showViewAllLink?: boolean }) {
   const [filter, setFilter] = useState<FilterValue>("all");
+  const usedShortcodesRef = useRef<Set<string>>(new Set());
 
   const places = useMemo(() => getFoodPlacesByArea(filter), [filter]);
+
+  function renderPlaceMedia(placeId: string) {
+    const post = getInstagramPostForPlace(placeId);
+    if (!post) return null;
+
+    if (usedShortcodesRef.current.has(post.shortcode)) {
+      return <InstagramPostLink post={post} />;
+    }
+
+    usedShortcodesRef.current.add(post.shortcode);
+    return (
+      <InstagramEmbed post={post} size="default" className="rounded-none border-0 border-b border-white/10" />
+    );
+  }
 
   return (
     <section
@@ -54,51 +70,41 @@ export function JaipurFoodSection({ showViewAllLink = true }: { showViewAllLink?
           </span>
           <div className="text-sm leading-relaxed text-amber-100/90">
             <strong className="font-medium text-amber-300">Curated by locals.</strong> Areas, dishes,
-            and timing tips are shared by Jaipur residents. Food photos load from{" "}
-            <strong className="text-amber-300">Instagram influencers</strong> — follow them for
-            updates.
+            and timing tips are shared by Jaipur residents. Each Instagram video appears once — follow
+            creators for more.
           </div>
         </div>
 
-        <InstagramFoodShowcase />
+        <InstagramFoodShowcase usedShortcodesRef={usedShortcodesRef} />
 
         <div className="mt-16">
           <h3 className="text-sm font-semibold uppercase tracking-wider text-stone-500">
             Explore by area
           </h3>
-          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {JAIPUR_FOOD_AREAS.map((area) => {
-              const areaPosts = getInstagramPostsForArea(area.id);
-              const previewPost = areaPosts[0];
+              const areaReel = getInstagramReelForArea(area.id);
 
               return (
-                <div
+                <button
                   key={area.id}
-                  className={`overflow-hidden rounded-xl border transition ${
+                  type="button"
+                  onClick={() => setFilter(area.id)}
+                  className={`rounded-xl border p-4 text-left transition ${
                     filter === area.id
-                      ? "border-amber-500/40 ring-1 ring-amber-500/30"
-                      : "border-white/10 hover:border-amber-500/20"
+                      ? "border-amber-500/40 bg-amber-500/10"
+                      : "border-white/10 bg-white/[0.02] hover:border-amber-500/20"
                   }`}
                 >
-                  {previewPost ? (
-                    <InstagramEmbed
-                      post={previewPost}
-                      size="compact"
-                      className="rounded-none border-0"
-                    />
-                  ) : (
-                    <div className="h-28 bg-stone-900" />
+                  <p className="font-medium text-white">{area.name}</p>
+                  <p className="mt-1 text-xs text-amber-500/80">{area.vibe}</p>
+                  <p className="mt-2 line-clamp-2 text-xs text-stone-500">{area.summary}</p>
+                  {areaReel && (
+                    <p className="mt-3 text-xs text-stone-600">
+                      IG: @{areaReel.influencerHandle}
+                    </p>
                   )}
-                  <button
-                    type="button"
-                    onClick={() => setFilter(area.id)}
-                    className="w-full border-t border-white/10 p-4 text-left"
-                  >
-                    <p className="font-medium text-white">{area.name}</p>
-                    <p className="mt-1 text-xs text-amber-500/80">{area.vibe}</p>
-                    <p className="mt-2 line-clamp-2 text-xs text-stone-500">{area.summary}</p>
-                  </button>
-                </div>
+                </button>
               );
             })}
           </div>
@@ -134,17 +140,11 @@ export function JaipurFoodSection({ showViewAllLink = true }: { showViewAllLink?
 
         <div className="mt-10 grid gap-8 lg:grid-cols-2">
           {places.map((place) => {
-            const igPost = getInstagramPostForPlace(place.id);
+            const media = renderPlaceMedia(place.id);
 
             return (
               <article key={place.id} className="card-surface flex flex-col overflow-hidden">
-                {igPost ? (
-                  <InstagramEmbed post={igPost} size="default" className="rounded-none border-0 border-b border-white/10" />
-                ) : (
-                  <div className="flex h-48 items-center justify-center bg-stone-900 text-sm text-stone-500">
-                    Add an Instagram post in jaipur-food-instagram.ts
-                  </div>
-                )}
+                {media}
 
                 <div className="flex flex-1 flex-col p-6">
                   <div className="flex flex-wrap items-start justify-between gap-2">
