@@ -60,6 +60,14 @@ npx vercel --prod # production
 
 Add Firebase env vars in the Vercel dashboard and authorize your `*.vercel.app` domain in Firebase Auth.
 
+## Google Search & reviews
+
+Guide: **[docs/GOOGLE_SETUP.md](docs/GOOGLE_SETUP.md)**
+
+- Submit `sitemap.xml` in Google Search Console
+- Public **Reviews** page at `/reviews` (Google sign-in to post)
+- Set `NEXT_PUBLIC_SITE_URL` in Vercel for correct SEO URLs
+
 ## Next steps
 
 1. Connect Firebase ([setup guide](docs/FIREBASE_SETUP.md))

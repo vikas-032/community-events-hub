@@ -7,6 +7,7 @@ import { useAuth } from "@/context/AuthProvider";
 const nav = [
   { href: "/events", label: "Events" },
   { href: "/blog", label: "Blog" },
+  { href: "/reviews", label: "Reviews" },
   { href: "/food", label: "Food" },
   { href: "/about", label: "About" },
   { href: "/profile", label: "Profile" },

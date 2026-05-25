@@ -11,6 +11,16 @@ export function formatEventDate(iso: string): string {
   });
 }
 
+export function formatReviewDate(iso: string): string {
+  const date = new Date(iso);
+  return date.toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    timeZone: "Asia/Kolkata",
+  });
+}
+
 export function formatEventDateShort(iso: string): string {
   const date = new Date(iso);
   return date.toLocaleDateString("en-IN", {
