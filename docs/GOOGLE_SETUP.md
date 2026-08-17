@@ -6,6 +6,15 @@ Your site is already prepared for Google:
 - **Robots:** `https://community-events-hub-orcin.vercel.app/robots.txt`
 - **Reviews page:** `/reviews` (public, indexable, with star ratings schema)
 
+### Automatic sitemap (no `next-sitemap` package)
+
+This project uses the built-in App Router file `src/app/sitemap.ts` (same idea as `next-sitemap`, but native to Next.js). It updates when you:
+
+- Add a heritage post in `src/lib/heritage-blogs.ts` (slug + `publishedAt` → new `/blog/...` URL)
+- Publish events in Firestore (or demo events in `src/lib/demo-data.ts`)
+
+The sitemap regenerates at most every hour (`revalidate = 3600`). Redeploy after large structural changes; you do not need to hand-edit `sitemap.xml`.
+
 Follow these steps in order.
 
 ---
@@ -32,12 +41,23 @@ Redeploy after saving.
    - Add it to `src/app/layout.tsx` inside `metadata` as `verification: { google: "YOUR_CODE" }` OR use Vercel’s Google integration if available.
    - Alternative: **DNS** record at your domain provider (if you use a custom domain later).
 
-5. After verified, go to **Sitemaps** → submit:
+5. After verified, go to **Sitemaps** → submit only:
    ```
-   https://community-events-hub-orcin.vercel.app/sitemap.xml
+   sitemap.xml
    ```
+   (no leading `/` — Search Console adds your domain automatically)
 
 6. Use **URL inspection** → paste your homepage → **Request indexing**.
+
+#### If status shows **Couldn't fetch**
+
+This means Google never got a valid XML response (not that your pages are wrong). The live sitemap is usually fine; the report can be stale.
+
+1. **Confirm in browser:** open [sitemap.xml](https://community-events-hub-orcin.vercel.app/sitemap.xml) — you should see XML, not an error page.
+2. **URL Inspection:** paste `https://community-events-hub-orcin.vercel.app/sitemap.xml` → **Test live URL** → should be **URL is available to Google**.
+3. **Remove and resubmit:** Sitemaps → ⋮ on the row → **Remove sitemap** → submit `sitemap.xml` again.
+4. **Vercel Deployment Protection:** Project → Settings → Deployment Protection → ensure **Production** is not password-blocking Googlebot (or allow search-engine bots).
+5. Wait **24–48 hours** — **Last read** and **Discovered pages** update after a successful fetch.
 
 Indexing can take a few days to a few weeks for a new site.
 
